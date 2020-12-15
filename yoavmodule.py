@@ -32,3 +32,29 @@ def check_intercepted_data(list_of_files):
 
     print(interception_results)
 
+
+def is_variation_length_ok(list_of_files):
+    """Checks if all the genetic variation lengths of each data file equals 1
+
+    inp = list containing the names of the data files."""
+
+    # Read train, valid and test data
+    train_data = pd.read_csv(list_of_files[0])
+    val_data = pd.read_csv(list_of_files[1])
+    test_data = pd.read_csv(list_of_files[2])
+
+    # Concat all data files into a dataframe 'all_data'
+    all_data = pd.concat([train_data, val_data, test_data])
+
+    # Create an array out of 'start' and 'end' columns of 'all data' dataframe
+    start_arr = all_data['start'].to_numpy()
+    end_arr = all_data['end'].to_numpy()
+
+    # Create an array of length of each genetic variation
+    length_arr = end_arr-start_arr
+
+    # Return True if all lengths are 1, Return False if one of the lengths is different from 1
+    for len in length_arr:
+        if len != 1:
+            return False
+    return True
